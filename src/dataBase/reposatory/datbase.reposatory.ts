@@ -9,6 +9,7 @@ export class dataBaseReposatory<TRawDoc> {
         return await this.model.create(data)
     }
     async findAll({select,populate, lean}:{
+        filter?:QueryFilter<TRawDoc>
         select?:string,
         populate?:string,
         lean?:boolean 
@@ -26,8 +27,8 @@ export class dataBaseReposatory<TRawDoc> {
         return query
 
     }
-    async findne ({filter,select,populate,lean}:{
-        filter:Partial<TRawDoc>,
+    async findone ({filter,select,populate,lean}:{
+        filter:QueryFilter<TRawDoc>,
         select?:string,
         populate?:string,
         lean?:boolean
@@ -63,13 +64,13 @@ export class dataBaseReposatory<TRawDoc> {
         return query
     }
     async update ({filter,data}:{
-        filter:any,
+        filter:QueryFilter<TRawDoc>,
         data:any
     }){
         return await this.model.updateOne(filter,data)
     }
     async deleteOne ({filter}:{
-        filter:any
+        filter:QueryFilter<TRawDoc>
     }){
         return await this.model.deleteOne(filter)
     }

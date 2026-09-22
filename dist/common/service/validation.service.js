@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validation = void 0;
+exports.validationGQL = exports.validation = void 0;
 const erorr_exception_1 = require("../Exceptions/erorr.exception");
 const validation = (sckema) => {
     return (req, res, next) => {
@@ -24,3 +24,17 @@ const validation = (sckema) => {
     };
 };
 exports.validation = validation;
+const validationGQL = (sckema, args) => {
+    let validationError = [];
+    let value = sckema.safeParse(args);
+    if (!value.success) {
+        validationError.push({
+            issue: value.error.issues
+        });
+    }
+    if (validationError.length > 0) {
+        throw (0, erorr_exception_1.MapGqlError)(new erorr_exception_1.badRequestExxeption('validation error', validationError));
+    }
+    return true;
+};
+exports.validationGQL = validationGQL;

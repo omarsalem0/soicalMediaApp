@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.conflictException = exports.notFoundExcepetion = exports.forbiddenExcepetion = exports.unauthorizedExcepetion = exports.badRequestExxeption = exports.ApplicationExecptions = void 0;
+exports.conflictException = exports.notFoundExcepetion = exports.forbiddenExcepetion = exports.unauthorizedExcepetion = exports.badRequestExxeption = exports.MapGqlError = exports.ApplicationExecptions = void 0;
+const graphql_1 = require("graphql");
 class ApplicationExecptions extends Error {
     status;
     constructor(message, status, cause) {
@@ -9,6 +10,15 @@ class ApplicationExecptions extends Error {
     }
 }
 exports.ApplicationExecptions = ApplicationExecptions;
+const MapGqlError = (error) => {
+    return new graphql_1.GraphQLError(error.message, {
+        extensions: {
+            statusCode: error.status,
+            cause: error.cause || ''
+        }
+    });
+};
+exports.MapGqlError = MapGqlError;
 class badRequestExxeption extends ApplicationExecptions {
     constructor(message, cause) {
         super(message, 400, cause);

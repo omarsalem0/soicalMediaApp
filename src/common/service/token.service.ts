@@ -4,29 +4,34 @@ import jwt, { JwtHeader, JwtPayload } from "jsonwebtoken"
 class TokenService {
     constructor(){
     }
-     generateToken(user:any){
+    async generateToken(user:any){
         if(!user) throw new badRequestExxeption("payload is not found")
         let signature=undefined
         let refreshSignature=undefined
+        let aud=undefined
         switch (user.role) {
             case 0:
                 signature=env.adminSignature
                 refreshSignature=env.RefreshAdminToken
+                aud="Admin"
                 break;
         
             default:
                 signature=env.userSignature
                 refreshSignature=env.refreshUserToken
+                aud="User"
                 break;
         }
-        let accessToken= jwt.sign({id:user._id},signature as string,{
-            audience:user.role,
+        let accessToken=await jwt.sign({id:user._id},signature as string,{
+            audience:aud,
             expiresIn:"30min"
         })
-        let refreshToken =jwt.sign({id:user._id},refreshSignature as string,{
-            audience:user.role,
+        let refreshToken =await jwt.sign({id:user._id},refreshSignature as string,{
+            audience:aud,
             expiresIn:"1y"
         })
+        console.log(accessToken);
+        
         return {accessToken,refreshToken}
     }
     async decodeToken(token:string){
@@ -35,7 +40,7 @@ class TokenService {
          if(!decoded) throw new badRequestExxeption('toke is not valid')
          let signature=undefined
          switch (decoded.aud) {
-            case "0":
+            case "Admin":
                 signature=env.adminSignature
                 break;
             default:
@@ -55,7 +60,7 @@ class TokenService {
          if(!decoded) throw new badRequestExxeption('toke is not valid')
          let refreshSignature=undefined
          switch (decoded.aud) {
-            case "0":
+            case "Admin":
                 refreshSignature=env.RefreshAdminToken
                 break;
             default:
@@ -74,7 +79,7 @@ class TokenService {
          if(!decoded) throw new badRequestExxeption('toke is not valid')
          let Signature=undefined
          switch (decoded.aud) {
-            case "0":
+            case "Admin":
                 Signature=env.adminSignature
                 break;
             default:
@@ -94,4 +99,4 @@ class TokenService {
     
 
 }
-export default new TokenService
+export default new TokenService()

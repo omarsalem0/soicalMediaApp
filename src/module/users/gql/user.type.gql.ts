@@ -5,7 +5,7 @@ import { genderEnum, providerEnum, roleEnum } from "../../../common/enums/user.e
 export const oneUserType= new GraphQLObjectType({
     name:'typeOfuser',
     fields:{
-           userName:{type:new GraphQLNonNull(GraphQLString)},
+            userName:{type:new GraphQLNonNull(GraphQLString)},
             firstName:{type:GraphQLString},
             lastName:{type:GraphQLString},
             email:{type:new GraphQLNonNull(GraphQLString)},

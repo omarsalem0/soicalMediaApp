@@ -1,2 +1,6 @@
-/node_modules
-/c46_accessKeys
+node_modules/
+dist/
+c46_accessKeys.csv
+.env.prod
+.env.dev
+.env.*

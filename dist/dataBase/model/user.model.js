@@ -7,13 +7,31 @@ exports.userModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const user_enums_1 = require("../../common/enums/user.enums");
 const userSckema = new mongoose_1.default.Schema({
-    firstName: String,
-    lastName: String,
-    email: String,
-    password: String,
-    phone: String,
-    confirmPassword: String,
-    confirmEmail: Boolean,
+    firstName: {
+        type: String,
+    },
+    lastName: { type: String },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: function () {
+            return this.provider === user_enums_1.providerEnum.System;
+        }
+    },
+    phone: {
+        type: String
+    },
+    profilePicture: {
+        type: [String]
+    },
+    confirmEmail: {
+        type: Boolean,
+        default: false
+    },
     gender: {
         type: Number,
         default: user_enums_1.genderEnum.Male
@@ -32,6 +50,6 @@ userSckema.virtual('userName').set(function (value) {
     this.firstName = firstName;
     this.lastName = lastName;
 }).get(function () {
-    return ` ${this.firstName} ${this.lastName}`;
+    return `${this.firstName} ${this.lastName}`;
 });
-exports.userModel = mongoose_1.default.model('user', userSckema);
+exports.userModel = mongoose_1.default.model('User', userSckema);

@@ -22,7 +22,7 @@ class dataBaseReposatory {
         }
         return query;
     }
-    async findne({ filter, select, populate, lean }) {
+    async findone({ filter, select, populate, lean }) {
         let query = await this.model.findOne(filter);
         if (select) {
             query = await query.select(select);

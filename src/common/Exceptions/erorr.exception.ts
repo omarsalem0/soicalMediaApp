@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql"
 
 interface AEror{
     message:string,
@@ -12,6 +13,13 @@ export class ApplicationExecptions extends Error implements AEror{
     constructor(message:string,public status:number,cause ?:unknown){
         super(message,{cause})
     }
+}
+export const MapGqlError =(error:ApplicationExecptions)=>{
+    return new GraphQLError(error.message,{
+        extensions:{
+            statusCode:error.status,
+            cause:error.cause || ''
+        }})
 }
 export class badRequestExxeption extends ApplicationExecptions{
     constructor(message:string,cause ?:unknown){

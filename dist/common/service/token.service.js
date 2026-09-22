@@ -9,29 +9,33 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class TokenService {
     constructor() {
     }
-    generateToken(user) {
+    async generateToken(user) {
         if (!user)
             throw new erorr_exception_1.badRequestExxeption("payload is not found");
         let signature = undefined;
         let refreshSignature = undefined;
+        let aud = undefined;
         switch (user.role) {
             case 0:
                 signature = env_service_1.env.adminSignature;
                 refreshSignature = env_service_1.env.RefreshAdminToken;
+                aud = "Admin";
                 break;
             default:
                 signature = env_service_1.env.userSignature;
                 refreshSignature = env_service_1.env.refreshUserToken;
+                aud = "User";
                 break;
         }
-        let accessToken = jsonwebtoken_1.default.sign({ id: user._id }, signature, {
-            audience: user.role,
+        let accessToken = await jsonwebtoken_1.default.sign({ id: user._id }, signature, {
+            audience: aud,
             expiresIn: "30min"
         });
-        let refreshToken = jsonwebtoken_1.default.sign({ id: user._id }, refreshSignature, {
-            audience: user.role,
+        let refreshToken = await jsonwebtoken_1.default.sign({ id: user._id }, refreshSignature, {
+            audience: aud,
             expiresIn: "1y"
         });
+        console.log(accessToken);
         return { accessToken, refreshToken };
     }
     async decodeToken(token) {
@@ -41,7 +45,7 @@ class TokenService {
                 throw new erorr_exception_1.badRequestExxeption('toke is not valid');
             let signature = undefined;
             switch (decoded.aud) {
-                case "0":
+                case "Admin":
                     signature = env_service_1.env.adminSignature;
                     break;
                 default:
@@ -62,7 +66,7 @@ class TokenService {
                 throw new erorr_exception_1.badRequestExxeption('toke is not valid');
             let refreshSignature = undefined;
             switch (decoded.aud) {
-                case "0":
+                case "Admin":
                     refreshSignature = env_service_1.env.RefreshAdminToken;
                     break;
                 default:
@@ -83,7 +87,7 @@ class TokenService {
                 throw new erorr_exception_1.badRequestExxeption('toke is not valid');
             let Signature = undefined;
             switch (decoded.aud) {
-                case "0":
+                case "Admin":
                     Signature = env_service_1.env.adminSignature;
                     break;
                 default:
@@ -101,4 +105,4 @@ class TokenService {
         }
     }
 }
-exports.default = new TokenService;
+exports.default = new TokenService();

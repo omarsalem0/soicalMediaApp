@@ -5,11 +5,11 @@ export interface IUser{
     firstName?:string,
     lastName?:string,
     email:string,
-    password:string,
+    password?:string,
     phone?:string,
-    confirmPassword:string,
+    profilePicture:string[]
     confirmEmail:boolean,
-    gender?:genderEnum,
-    provider ?:providerEnum,
-    role ?:roleEnum
+    gender:genderEnum,
+    provider:providerEnum,
+    role:roleEnum
 }

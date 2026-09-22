@@ -22,5 +22,26 @@ class RedisService {
             console.log('redis connection error', error);
         }
     }
+    set = async ({ key, value, ttl }) => {
+        if (typeof value == 'object') {
+            value = JSON.stringify(value);
+        }
+        return ttl ? await this.client.set(key, value, { EX: ttl }) : await this.client.set(key, value);
+    };
+    get = async (key) => {
+        return await this.client.get(key);
+    };
+    mGet = async (...keys) => {
+        return this.client.mGet(keys);
+    };
+    del = async (key) => {
+        return await this.client.del(key);
+    };
+    ttl = async (key) => {
+        return await this.client.ttl(key);
+    };
+    creatRevokToken = ({ userID, token }) => {
+        return `revokToken::${userID}:${token}`;
+    };
 }
 exports.redisService = new RedisService();

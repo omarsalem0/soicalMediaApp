@@ -1,16 +1,32 @@
-import { string } from './../../../node_modules/zod/src/v4/core/regexes';
 import mongoose from "mongoose";
 import { IUser } from "../../common/interface/user.interface";
 import { genderEnum, providerEnum, roleEnum } from "../../common/enums/user.enums";
 
 const userSckema= new mongoose.Schema<IUser>({
-    firstName:String,
-    lastName:String,
-    email:String,
-    password:String,
-    phone:String,
-    confirmPassword:String,
-    confirmEmail:Boolean,
+    firstName:{
+        type:String,
+    },
+    lastName:{type:String},
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:function(this){
+            return this.provider === providerEnum.System
+    }},
+    phone:{
+        type:String
+    },
+    profilePicture:{
+        type:[String]
+    },
+    confirmEmail:{
+        type:Boolean,
+        default:false
+},
     gender:{
         type:Number,
         default:genderEnum.Male
@@ -23,14 +39,13 @@ const userSckema= new mongoose.Schema<IUser>({
         type:Number,
         default:roleEnum.User
     }
-})
-
+}
+)
 userSckema.virtual('userName').set(function(value){
    let [firstName,lastName]=value.split(" ")
     this.firstName=firstName
     this.lastName=lastName
 }).get(function(){
-    return ` ${this.firstName} ${this.lastName}`
-})
+return `${this.firstName} ${this.lastName}`})
 
-export const userModel =mongoose.model<IUser>('user',userSckema)
+export const userModel =mongoose.model<IUser>('User',userSckema)
