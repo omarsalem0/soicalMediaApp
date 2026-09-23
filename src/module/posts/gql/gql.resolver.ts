@@ -9,7 +9,7 @@ class ResolverGQL {
     private PostService:postService
     constructor() {
         this.PostService=new postService()
-         this.getALLpost = this.getALLpost.bind(this)
+        //  this.getALLpost = this.getALLpost.bind(this)
 
     }
     async getALLpost(parent:any,args:any,context:any) {

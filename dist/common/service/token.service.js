@@ -56,7 +56,7 @@ class TokenService {
             return decodeData;
         }
         catch (error) {
-            throw new erorr_exception_1.badRequestExxeption('token is not decoded', error);
+            throw new erorr_exception_1.badRequestExxeption('token is not valid or expire', error);
         }
     }
     async decodeRefreshToken(token) {

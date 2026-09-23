@@ -10,6 +10,7 @@ import { env } from "./config/env.service";
 import { dataBaseConnection } from "./dataBase/connection";
 import { globalHandelError } from "./middleware/errorHandulare";
 import authRouter from "./module/auth/auth.controller";
+import friendsRouter from "./module/friends/friends.controller";
 import { schema } from "./module/gql/schema.gql";
 
 export const bootStrap=async()=>{
@@ -21,7 +22,9 @@ export const bootStrap=async()=>{
     await redisService.handleConnection()
     // run gql
     app.all('/GraphQL',createHandler({schema:schema,context:(req)=>({req})}))    
+    // use from all Routes
     app.use('/auth',authRouter) 
+    app.use('/friends',friendsRouter) 
 
     app.get('/uplouds/*path',async(req:Request,res:Response)=>{
        const {path} =req.params as {path:string[]}

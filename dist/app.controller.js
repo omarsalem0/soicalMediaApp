@@ -15,6 +15,7 @@ const env_service_1 = require("./config/env.service");
 const connection_1 = require("./dataBase/connection");
 const errorHandulare_1 = require("./middleware/errorHandulare");
 const auth_controller_1 = __importDefault(require("./module/auth/auth.controller"));
+const friends_controller_1 = __importDefault(require("./module/friends/friends.controller"));
 const schema_gql_1 = require("./module/gql/schema.gql");
 const bootStrap = async () => {
     const S3GetFile = (0, util_1.promisify)(stream_1.pipeline);
@@ -24,6 +25,7 @@ const bootStrap = async () => {
     await redis_service_1.redisService.handleConnection();
     app.all('/GraphQL', (0, express_2.createHandler)({ schema: schema_gql_1.schema, context: (req) => ({ req }) }));
     app.use('/auth', auth_controller_1.default);
+    app.use('/friends', friends_controller_1.default);
     app.get('/uplouds/*path', async (req, res) => {
         const { path } = req.params;
         if (path.length == 0) {

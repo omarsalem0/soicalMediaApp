@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { genderEnum, providerEnum, roleEnum } from "../enums/user.enums";
 
 export interface IUser{
@@ -12,4 +13,5 @@ export interface IUser{
     gender:genderEnum,
     provider:providerEnum,
     role:roleEnum
+    friends:Types.ObjectId[]
 }

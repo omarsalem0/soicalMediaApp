@@ -49,20 +49,14 @@ class AuthService {
        throw new badRequestExxeption('no data send or data not complete')}
      let {email,password}=data
      let exsistUser = await this.userReposatory.findone({filter:{email,confirmEmail:true}})
-     console.log(exsistUser);
-     
      if (!exsistUser) {
         throw new notFoundExcepetion('email dosnot exsist')
      }
-     let verifyPassword =await verifyData(password,exsistUser.password)
-     console.log(verifyPassword);
-     
+     let verifyPassword =await verifyData(password,exsistUser.password)     
      if (!verifyPassword) {
         throw new badRequestExxeption('invild password')
      }
-     let {accessToken,refreshToken}=await TokenService.generateToken(exsistUser)
-     console.log(accessToken);
-     
+     let {accessToken,refreshToken}=await TokenService.generateToken(exsistUser)     
      return {accessToken,refreshToken}
 
     }

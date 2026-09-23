@@ -1,4 +1,4 @@
-import { Model, QueryFilter } from 'mongoose';
+import { Model, QueryFilter, Types } from 'mongoose';
 import { IUser } from './../../common/interface/user.interface';
 
 export class dataBaseReposatory<TRawDoc> {
@@ -28,7 +28,7 @@ export class dataBaseReposatory<TRawDoc> {
 
     }
     async findone ({filter,select,populate,lean}:{
-        filter:QueryFilter<TRawDoc>,
+        filter:any,
         select?:string,
         populate?:string,
         lean?:boolean
@@ -46,7 +46,7 @@ export class dataBaseReposatory<TRawDoc> {
         return query
     }
      async findById ({id,select,populate,lean}:{
-        id:string,
+        id:string | Types.ObjectId,
         select?:string,
         populate?:string,
         lean?:boolean

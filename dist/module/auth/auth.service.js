@@ -52,17 +52,14 @@ class AuthService {
         }
         let { email, password } = data;
         let exsistUser = await this.userReposatory.findone({ filter: { email, confirmEmail: true } });
-        console.log(exsistUser);
         if (!exsistUser) {
             throw new erorr_exception_1.notFoundExcepetion('email dosnot exsist');
         }
         let verifyPassword = await (0, hassData_1.verifyData)(password, exsistUser.password);
-        console.log(verifyPassword);
         if (!verifyPassword) {
             throw new erorr_exception_1.badRequestExxeption('invild password');
         }
         let { accessToken, refreshToken } = await token_service_1.default.generateToken(exsistUser);
-        console.log(accessToken);
         return { accessToken, refreshToken };
     }
     async verifyAccount(data) {

@@ -43,7 +43,6 @@ const PostSckema=new Schema<IPost>({
         type:Date,
         default:null
     }
-
 },
 {
     timestamps:true,

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { IUser } from "../../common/interface/user.interface";
 import { genderEnum, providerEnum, roleEnum } from "../../common/enums/user.enums";
 
@@ -38,7 +38,10 @@ const userSckema= new mongoose.Schema<IUser>({
     role:{
         type:Number,
         default:roleEnum.User
-    }
+    },
+    friends:[{
+        type:Types.ObjectId
+    }]
 }
 )
 userSckema.virtual('userName').set(function(value){

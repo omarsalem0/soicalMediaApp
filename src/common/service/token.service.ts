@@ -50,7 +50,7 @@ class TokenService {
          let decodeData=await jwt.verify(token,signature as string)
          return decodeData          
         } catch (error) {
-            throw new badRequestExxeption('token is not decoded',error)
+            throw new badRequestExxeption('token is not valid or expire',error)
         }
     }
 
